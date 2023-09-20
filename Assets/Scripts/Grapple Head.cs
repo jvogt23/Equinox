@@ -64,11 +64,12 @@ public class GrappleHead : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerGrapple>() == null)
         {
+            
             if (!insideSomething && collision.gameObject.CompareTag("Grabbable")) { // Code for if the object was grabbable
                 grabbedObj = collision.gameObject;
                 grabRig = grabbedObj.GetComponent<Rigidbody>();
-                grabRig.isKinematic = true;
-                grabRig.transform.parent = rigidBody.transform;
+                grabRig.isKinematic = false;
+                //grabRig.transform.parent = rigidBody.transform;
                 // grabRig.transform.parent = rigidBody.transform;
 
                 rigidBody.isKinematic = true; //Disables Physics on this object
@@ -76,10 +77,11 @@ public class GrappleHead : MonoBehaviour
                 transform.parent = collision.transform;
                 insideSomething = true;
                 player.StartGrappling(collision.collider);
-
-                StopGrappling();
             }
-            else if (!insideSomething)
+           
+            
+            
+            if (!insideSomething)
             {
                 rigidBody.isKinematic = true; //Disables Physics on this object
                 GetComponent<Collider>().enabled = false;

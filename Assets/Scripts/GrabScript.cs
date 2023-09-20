@@ -6,7 +6,7 @@ public class GrabScript : MonoBehaviour
 {
     public GameObject player;
     public Transform posHold;
-    public GameObject pickUpText;
+    //public GameObject pickUpText;
     private GameObject lookObject;
     private GameObject grabbedObject;
     private Rigidbody grabRigid;
@@ -21,12 +21,12 @@ public class GrabScript : MonoBehaviour
                 if (hit.transform.gameObject.tag == "Grabbable") {
                     lookObject = hit.transform.gameObject;
                     currLook = true;
-                    pickUpText.SetActive(true);
+                   // pickUpText.SetActive(true);
                 }
             } else {
                 lookObject = null;
                 currLook = false;
-                pickUpText.SetActive(false);
+               // pickUpText.SetActive(false);
             }
         }
         
@@ -52,7 +52,7 @@ public class GrabScript : MonoBehaviour
         grabRigid.transform.parent = posHold.transform;
         grabbedObject.transform.rotation = posHold.rotation;
         Physics.IgnoreCollision(grabbedObject.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
-        pickUpText.SetActive(false);
+        //pickUpText.SetActive(false);
     }
 
     // Drops Object

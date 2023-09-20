@@ -18,6 +18,9 @@ public class PlayerGrapple : MonoBehaviour
     private GameObject hand;
     float timer = -1.0f;
 
+    //Distance to a grabbable object
+    public float grabbableDist;
+
     //Hiding the camera's rigidbody with the one we want
     [SerializeField] private new Rigidbody rigidbody;
 
@@ -207,8 +210,17 @@ public class PlayerGrapple : MonoBehaviour
     private IEnumerator Grappling(Collider collider)
     {
         while (true) {
+            //If you are connected to a grabbable object, this checks your distance to it and automatically
+            //sets it to grabbed when it is close enough. It does this by running StopGrappling()
+            //in GrappleHead.cs
+            if (collider.CompareTag("Grabbable") && Vector3.Distance(this.transform.position, collider.transform.position) < 5)
+            {
+                Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                grappleHead.StopGrappling();
+            }
+
             Vector3 moveVector = grappleHead.transform.position - transform.position;
-            if (collider.CompareTag("MoveableObject"))
+            if (collider.CompareTag("MoveableObject") || collider.CompareTag("Grabbable"))
             {
                 if(Vector3.Angle(rigidbody.velocity.normalized, moveVector.normalized) > dampingAngle)
                 {
@@ -230,11 +242,13 @@ public class PlayerGrapple : MonoBehaviour
                         rigidbody.velocity = rigidbody.velocity * (1 - dampingSpeed);
                     }
                     rigidbody.AddForce(moveVector.normalized * grappleForce);
+
                 }
                 else
                 {
                     goal.GetComponent<goal>().NextLevel();
                 }
+
             }
             else
             {
